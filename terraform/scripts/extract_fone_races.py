@@ -43,7 +43,7 @@ def getAllRaces():
             'url': []}
 
     for year in list(range(1950,2022)):
-        url = 'https://ergast.com/api/f1/{}.json'
+        url = 'http://ergast.com/api/f1/{}.json'
         r = requests.get(url.format(year))
         json = r.json()
         for item in json['MRData']['RaceTable']['Races']:
@@ -182,7 +182,7 @@ def getDriverStandings(rounds):
     for n in list(range(len(rounds))):
         for i in rounds[n][1]:
         
-            url = 'https://ergast.com/api/f1/{}/{}/driverStandings.json'
+            url = 'http://ergast.com/api/f1/{}/{}/driverStandings.json'
             r = requests.get(url.format(rounds[n][0], i))
             json = r.json()
 
@@ -237,7 +237,7 @@ def getConstructorStandings(constructor_rounds):
     for n in list(range(len(constructor_rounds))):
         for i in constructor_rounds[n][1]:
         
-            url = 'https://ergast.com/api/f1/{}/{}/constructorStandings.json'
+            url = 'http://ergast.com/api/f1/{}/{}/constructorStandings.json'
             r = requests.get(url.format(constructor_rounds[n][0], i))
             json = r.json()
 
@@ -338,7 +338,7 @@ def getWeatherInfo(races):
 def getQualifyingResults(path):
     qualifying_results = pd.DataFrame()
     for year in list(range(1983,2022)):
-        url = 'https://www.formula1.com/en/results.html/{}/races.html'
+        url = 'http://www.formula1.com/en/results.html/{}/races.html'
         r = requests.get(url.format(year))
         soup = BeautifulSoup(r.text, 'html.parser')
         
@@ -349,7 +349,7 @@ def getQualifyingResults(path):
                 year_links.append(link)
 
         year_df = pd.DataFrame()
-        new_url = 'https://www.formula1.com{}'
+        new_url = 'http://www.formula1.com{}'
         for n, link in list(enumerate(year_links)):
             link = link.replace('race-result.html', 'starting-grid.html')
             df = pd.read_html(new_url.format(link))
@@ -377,20 +377,20 @@ def extractErgast(path):
     getAllRaces()
     rounds = getRounds(race)
     # Execute Threads
-    t3 = Thread(target=getRacesResults, args=(rounds,))
+    #t3 = Thread(target=getRacesResults, args=(rounds,))
     t4 = Thread(target=getDriverStandings, args=(rounds,))
-    t5 = Thread(target=getConstructorStandings, args=(rounds[8:],))
-    t6 = Thread(target=getWeatherInfo, args=(race,))
+    #t5 = Thread(target=getConstructorStandings, args=(rounds[8:],))
+    #t6 = Thread(target=getWeatherInfo, args=(race,))
 
-    t3.start()
+    #t3.start()
     t4.start()
-    t5.start()
-    t6.start()
+    #t5.start()
+    #t6.start()
 
-    t3.join()
+    #t3.join()
     t4.join()
-    t5.join()
-    t6.join()
+    #t5.join()
+    #t6.join()
 
 
 def main():
